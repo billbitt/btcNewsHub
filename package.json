@@ -1,14 +1,15 @@
 {
-  "name": "cheerio-and-mongo",
+  "name": "btc-news-hub",
   "version": "1.0.0",
-  "description": "an internet scraper using cheerio and mongo for storage",
+  "description": "an aggregator of btc news",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/billbitt/cheerio-and-mongo.git"
+    "url": "git+https://github.com/billbitt/btcNewsHub.git"
   },
   "keywords": [
     "cheerio",
@@ -18,9 +19,9 @@
   "author": "Bill Bittner",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/billbitt/cheerio-and-mongo/issues"
+    "url": "https://github.com/billbitt/btcNewsHub/issues"
   },
-  "homepage": "https://github.com/billbitt/cheerio-and-mongo#readme",
+  "homepage": "https://github.com/billbitt/btcNewsHub#readme",
   "dependencies": {
     "body-parser": "^1.16.1",
     "cheerio": "^0.22.0",

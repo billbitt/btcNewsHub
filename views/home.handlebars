@@ -1,18 +1,32 @@
 {{#each news}}
-    <div class="article">
-        <h2><a href="{{link}}">{{title}}</a></h2>
-        <p>{{body}}</p>
-        <form action="/comment/{{_id}}">
-            <textarea type="text" name="comment" placeholder="Comment"></textarea>
-            <br>
-            Name: <input type="text" name="author">
-            <button type="submit" value="Submit">Submit</button>
-        </form>
-        {{#each comments}}
-            <div class="comment">
-                <p>{{text}}</p>
-                <p>{{author}}</p>
+    <div class="row">
+        {{!--article--}}
+        <div class="article">
+            <h2><a href="{{link}}">{{title}}</a></h2>
+            <p>{{body}}</p>
+        </div>
+        <a class="toggle-comments">View Comments</a><a>({{comments.length}})</a>
+        <div class="comments" hidden>
+            {{!--existing comment area--}}
+            {{#each comments}}
+                <div class="comment">
+                    <div class="comment-tools">
+                        <button class="comment-button delete-comment" data-id="{{_id}}">delete</button>
+                    </div>
+                    <div class="comment-details">
+                        <p class="comment-body">{{body}}</p>
+                        <p class="comment-author"> Author: {{author}}</p>
+                    </div>
+                </div>
+            {{/each}}
+                {{!--new comment area --}}
+            <div class="newComment">
+                <form action="comment/{{_id}}" method="post">
+                    Comment: <input type="text" name="body">
+                    Name: <input type="text" name="author">
+                    <button type="submit" value="Submit">Submit</button>
+                </form>
             </div>
-        {{/each}}
+        </div>
     </div>
 {{/each}}

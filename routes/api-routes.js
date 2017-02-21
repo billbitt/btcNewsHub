@@ -22,7 +22,7 @@ module.exports = function(app) {
                 // create empty object to store results in 
                 var result = {}; 
                 // save the title, lead, and link of each article
-                result.title = $(element).children("h2", "header").text();
+                result.title = $(element).children("header").children("h2").text();
                 result.link = $(element).children("a", "header").attr("href");
                 result.body = $(element).children("div.front-view-content").text();
                 // create an entry using the Article model
@@ -45,7 +45,9 @@ module.exports = function(app) {
     // return all articles
     app.get("/api/articles", function(req, res) {
         //grabs all of the articles and return them 
-        Article.find({}, function(err, docs){
+        Article.find({})
+        .populate("comments")
+        .exec(function(err, docs){
             if (err) {
                 res.send(err);
             } else {
@@ -57,15 +59,31 @@ module.exports = function(app) {
     // add Comment
     // return all articles
     app.post("/api/comment/:id", function(req, res) {
-        
-        //grabs all of the articles and return them 
-        Article.find({}, function(err, docs){
+        // create a new comment from the model 
+        var newComment = new Comment(req.body);
+        // use a custom method to update the date 
+        newComment.lastUpdatedDate();  //note: not working yet
+        // save the comment in the db
+        newComment.save(function(err, doc){
             if (err) {
                 res.send(err);
             } else {
-                res.send(docs);
+                //update the article document by adding the comment id to it 
+                Article.findOneAndUpdate(
+                    {"_id": req.params.id},
+                    {$push: {"comments": doc._id}},
+                    {new: true},
+                    function(error, document){
+                        if (error) {
+                            res.send(error);
+                        } else {
+                            console.log("comment saved");
+                            res.send(document);
+                        };
+                    }
+                );
             };
-        });
+        })
     });
 
 }

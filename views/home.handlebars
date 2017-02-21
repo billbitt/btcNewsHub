@@ -1,0 +1,18 @@
+{{#each news}}
+    <div class="article">
+        <h2><a href="{{link}}">{{title}}</a></h2>
+        <p>{{body}}</p>
+        <form action="/comment/{{_id}}">
+            <textarea type="text" name="comment" placeholder="Comment"></textarea>
+            <br>
+            Name: <input type="text" name="author">
+            <button type="submit" value="Submit">Submit</button>
+        </form>
+        {{#each comments}}
+            <div class="comment">
+                <p>{{text}}</p>
+                <p>{{author}}</p>
+            </div>
+        {{/each}}
+    </div>
+{{/each}}

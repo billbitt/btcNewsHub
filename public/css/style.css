@@ -1,0 +1,30 @@
+nav, #container-main, footer {
+    padding: 20px;
+}
+
+nav, footer {
+    text-align: center;
+}
+
+nav {
+    background-color: lightseagreen;
+}
+
+.logo {
+    float: left;
+}
+
+.nav-right {
+    float: right;
+}
+
+.nav-item {
+    float: left;
+    margin: 10px;
+}
+
+footer {
+    background-color: lavender
+}
+
+

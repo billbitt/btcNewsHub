@@ -4,23 +4,26 @@
     <head>
         <meta charset="UTF-8">
         <title>BTC News</title>
+        <link rel="stylesheet" href="/css/style.css" title="main style page">
     </head>
 
     <body>
         <nav>
-            <div id="logo">BTC News
+            <div class="logo">BTC News
             </div>
             <div class="nav-right">
-                <div class="nav-item login">
+                <div class="nav-item" id="login">
                     <a href="/login">Login</a>
                 </div>
-                <div class="nav-item logout">
+                <div class="nav-item" id="logout">
                     <a href="/logout">Logout</a>
                 </div>
             </div>
         </nav>
-    
-        {{{ body }}}
+
+        <div id="container-main">
+            {{{ body }}}
+        </div>
 
         <footer>
             BTC News | &copy; 2017 @BillBitt

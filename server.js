@@ -5,34 +5,26 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var exphbs = require('express-handlebars');
 
-// load models
-var Article = require("./models/Article.js");
-var Comment = require("./models/Comment.js");
-
-// load scraping tools
-var request = require("request");
-var cheerio = require("cherio");
-
 // mongoose's promise is deprecated so load promise package
 var Promise = require("bluebird");
 mongoose.Promise = Promise;
 
-// initialize express
+//-- initialize express
 var app = express();
-
-app.use(logger("dev"));  // initialize morgan logger
-
-app.use(bodyParser.urlencoded({  // initialise  body parser
+// initialize morgan logger
+app.use(logger("dev"));  
+// initialise  body parser
+app.use(bodyParser.urlencoded({  
     extended: false
 }));
+// initialise json in body parser 
+app.use(bodyParser.json());  
+// make public a static directory
+app.use(express.static("public"));
 
-app.use(bodyParser.json());  // initialise json in body parser 
-
-app.use(express.static("public"));  // // make public a static directory
-
-// configure server to use handlebars
-app.engine("handlebards", exphbs({defaultLayout: 'main'}));
-app.set("view engine", "handlebards");
+//--- configure server to use handlebars
+app.engine("handlebars", exphbs({defaultLayout: 'main'}));
+app.set("view engine", "handlebars");
 
 
 //--- configure database

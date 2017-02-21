@@ -6,15 +6,15 @@ var Schema = mongoose.Schema;
 // create a new schema
 var ArticleSchema = new Schema({
     title: {
-        type: string,
+        type: String,
         required: true
     },
     body: {
-        type: string,
+        type: String,
         required: true
     },
     link: {
-        type: string,
+        type: String,
         required: true
     },
     comments: [{ // will contain an array of comments 

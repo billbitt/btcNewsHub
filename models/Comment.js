@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 // create a new schema for Comments 
 var CommentSchema = new Schema({
     body: {
-        type: string,
+        type: String,
         trim: true,
         required: "A comment is required to comment",
         validate: [
@@ -17,7 +17,7 @@ var CommentSchema = new Schema({
         ]
     },
     author: {
-        type: string,
+        type: String,
         trim: true,
         required: "An author is required to comment",
         validate: [
@@ -44,7 +44,7 @@ CommentSchema.methods.lastUpdatedDate = function(){
 };
 
 // use the schema to make the model
-var Comment = mongoose.model("User", UserSchema);
+var Comment = mongoose.model("Comment", CommentSchema);
 
 // export the model
 module.exports = Comment;

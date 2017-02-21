@@ -56,9 +56,22 @@ module.exports = function(app) {
         });
     });
 
+    // return one article
+    app.get("/api/article/:id", function(req, res) {
+        //grabs all of the articles and return them 
+        Article.findById(req.params.id)
+        .populate("comments")
+        .exec(function(err, docs){
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(docs);
+            };
+        });
+    });
+
     // add Comment
-    // return all articles
-    app.post("/api/comment/:id", function(req, res) {
+    app.post("/api/article/:id", function(req, res) {
         // create a new comment from the model 
         var newComment = new Comment(req.body);
         // use a custom method to update the date 

@@ -22,39 +22,35 @@ nav {
     font-style: bold;
 }
 
-.article, .toggle-comments, .comment, .newComment {
+.article, .comment, .newComment {
     margin: 5px 0px 5px 0px;
     padding: 10px 5px 10px 5px;
 }
 
+.newComment {
+    width: 400px;
+}
+
+.comment-box {
+    width: 100%;
+    height: 4;
+}
+
 .comment {
-    float: clear;
     overflow: auto;
 }
 
-.comment-tools, .comment-details {
-    float: left;
-}
-
-.comment-tools {
-    margin: 0px 10px 0px 0px;
-}
-
-.comment-button {
-    float: clear;
-    width: 100%;
-}
-
-.comment-body, .comment-author {
+.comment-body, .comment-tools {
     line-height: 0px;
 }
 
 .comment-body {
     color: darkslategray;
+    
 }
 
-.comment-author {
-    color: darkgrey;
+.comment-detail {
+    margin: 0px 5px 0px 5px;
 }
 
 a {

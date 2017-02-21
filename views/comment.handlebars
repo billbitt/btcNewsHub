@@ -1,0 +1,29 @@
+{{!--comment details--}}
+<div class="comment">
+    <p class="comment-body">{{comment.body}}</p>
+    <div class="comment-tools">
+        <a class="comment-detail">{{comment.author}}</a>|
+        <a class="comment-detail">{{comment.dateCreated}}</a>|
+    </div>
+</div>
+{{!-- reply area --}}
+<div class="newComment">
+    <form action="/comment/{{comment._id}}" method="post">
+        <textarea class="comment-box" type="text" name="body" placeholder="Enter comment here"></textarea>
+        <br>
+        Author Name: <input type="text" name="author">
+        <button type="submit" value="Submit">Submit</button>
+    </form>
+</div>
+{{!--existing comment area--}}
+{{#each comment.replies}}
+    <div class="comment">
+        <p class="comment-body">{{body}}</p>
+        <div class="comment-tools">
+            <a class="comment-detail">{{author}}</a>|
+            <a class="comment-detail">{{dateCreated}}</a>|
+            <a class="comment-detail" href="/comment/{{_id}}">reply</a>|
+            <a class="comment-detail" href="/delete/{{../comment._id}}/{{_id}}">delete</a>|
+        </div>
+    </div>
+{{/each}}

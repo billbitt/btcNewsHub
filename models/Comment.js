@@ -34,7 +34,11 @@ var CommentSchema = new Schema({
     lastUpdated: {
         type: Date,
         default: Date.now
-    }
+    },
+    replies: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: "Comment"
+    }]
 });
 
 // methods for the schema 

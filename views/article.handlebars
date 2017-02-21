@@ -1,0 +1,28 @@
+
+{{!--article details--}}
+<div class="article">
+    <h2><a href="{{article.link}}">{{article.title}}</a></h2>
+    <p>{{article.body}}</p>
+</div>
+<a href="/article/{{article._id}}">View {{article.comments.length}} Comments</a>
+{{!--new comment area --}}
+<div class="newComment">
+    <form action="{{article._id}}" method="post">
+        <textarea class="comment-box" type="text" name="body" placeholder="Enter comment here"></textarea>
+        <br>
+        Author Name: <input type="text" name="author">
+        <button type="submit" value="Submit">Submit</button>
+    </form>
+</div>
+{{!--existing comment area--}}
+{{#each article.comments}}
+    <div class="comment">
+        <p class="comment-body">{{body}}</p>
+        <div class="comment-tools">
+            <a class="comment-detail">{{author}}</a>|
+            <a class="comment-detail">{{dateCreated}}</a>|
+            <a class="comment-detail" href="/comment/{{_id}}">reply</a>|
+            <a class="comment-detail" href="/delete/{{../article._id}}/{{_id}}">delete</a>|
+        </div>
+    </div>
+{{/each}}

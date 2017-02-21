@@ -1,6 +1,12 @@
+module.exports = function(app) {
 
+    // home route 
+    app.get("/", function(req, res) {
 
-// home route 
-app.get("/", function(req, res) {
-    res.send(index.html);
-});
+        res.render('home', {news: req.newsDocs});
+    });
+
+    // specific article route
+
+}
+

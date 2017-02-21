@@ -35,19 +35,27 @@ app.engine("handlebards", exphbs({defaultLayout: 'main'}));
 app.set("view engine", "handlebards");
 
 
-// configure database
-mongoose.connect("mongodb://heroku_x9jkg16f:qkq7k65g7r9sdmj070dudp7t3k@ds157529.mlab.com:57529/heroku_x9jkg16f");  // connect to mongodb 
-
-var db = mongoose.connection;  // store the connection
-
-db.on("error", function(err){  // log any errors 
+//--- configure database
+// connect to mongodb
+mongoose.connect("mongodb://heroku_x9jkg16f:qkq7k65g7r9sdmj070dudp7t3k@ds157529.mlab.com:57529/heroku_x9jkg16f") 
+// store the connection
+var db = mongoose.connection;  
+// log any errors 
+db.on("error", function(err){  
     console.log("Mongoose Error:", err);
 });
-
-db.once("open", function() {  // log success 
+// log success 
+db.once("open", function() {  
     console.log("Mongoose connection successful.");
 });
 
-// routes
+//--- routes
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes.js")(app);
+
+
+//--- Listen on port 
+var PORT = process.env.PORT || 3000;
+app.listen(PORT, function() {
+  console.log("App listening on port", PORT);
+});

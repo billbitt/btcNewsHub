@@ -8,7 +8,6 @@ var ArticleSchema = new Schema({
     title: {
         type: String,
         required: true,
-        unique: true
     },
     body: {
         type: String,
@@ -16,7 +15,12 @@ var ArticleSchema = new Schema({
     },
     link: {
         type: String,
-        required: true
+        required: true,
+        unique: true
+    },
+    source: {
+        type: String,
+        required: true,
     },
     comments: [{ // will contain an array of comments 
         type: Schema.Types.ObjectId, // will save the object Id of a comment 

@@ -2,9 +2,10 @@
     <div class="row">
         {{!--article--}}
         <div class="article">
-            <h2><a href="{{link}}">{{title}}</a></h2>
+            <h3><a href="{{link}}">{{title}}</a></h3>
             <p>{{body}}</p>
+            <a class="detail-item">Via {{source}}</a>|
+            <a class="detail-item" href="/article/{{_id}}">View {{comments.length}} Comments</a>
         </div>
-        <a class="view-comments" href="/article/{{_id}}">View {{comments.length}} Comments</a>
     </div>
 {{/each}}

@@ -1,5 +1,13 @@
 
-nav, #container-main, footer {
+a {
+    color: lightseagreen;
+}
+
+a:visited {
+    color: darkgray;
+}
+
+nav, footer {
     padding: 20px 0px 20px 0px;
 }
 
@@ -17,9 +25,17 @@ nav {
     margin: 20px;
 }
 
-.logo {
-    font-size: x-large;
-    font-style: bold;
+.nav-link {
+    color: white
+}
+
+.nav-link:visited {
+    color: lightgoldenrodyellow
+}
+
+#tagline {
+    color: lightgoldenrodyellow;
+    font-style: italic;
 }
 
 .article, .comment, .newComment {
@@ -49,16 +65,8 @@ nav {
     
 }
 
-.comment-detail {
+.detail-item, .comment-detail {
     margin: 0px 5px 0px 5px;
-}
-
-a {
-    color: lightseagreen;
-}
-
-a:visited {
-    color: darkgray;
 }
 
 footer {

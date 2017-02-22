@@ -2,6 +2,10 @@
 var Article = require("../models/Article.js");
 var Comment = require("../models/Comment.js");
 
+// load scraping tools
+var request = require("request");
+var cheerio = require("cheerio");
+
 // export routes
 module.exports = function(app) {
 
@@ -17,7 +21,57 @@ module.exports = function(app) {
                 res.render('home', {news: docs});
             };
         });
-        
+    });
+
+    // route to referesh scrape
+    app.get("/refresh", function(req, res) {
+        // make a request to scrape for new articles 
+        request("https://themerkle.com/category/news/crypto/", function(error, response, body ) {
+            // check for errors 
+            if (error) {
+                console.log("error:", error);
+            };
+            // parse the body 
+            var $ = cheerio.load(body);  //load the html into cheerio and save as $ as shorthand selector
+            $("article.latestPost.excerpt").each(function(i, element) {
+                console.log("found an article");
+                // create empty object to store results in 
+                var result = {}; 
+                // save the title, lead, and link of each article
+                result.title = $(element).children("header").children("h2").text();
+                result.link = $(element).children("a", "header").attr("href");
+                result.body = $(element).children("div.front-view-content").text();
+                
+                //break link down to source
+                var sourceUrl = [];
+                var start = false;
+                for (var i = 0; i < result.link.length; i++){
+                    if (start === false) {  // start after "//"
+                        if ((result.link[i] === "/") && (result.link[i-1] === "/")) start = true;
+                    } else {
+                        if (result.link[i] != "/"){ // push each letter if we haven't reached "/"
+                            sourceUrl.push(result.link[i]);  
+                        } else {  // if we have reached "/" break out 
+                            break;
+                        };
+                    };
+                };
+                result.source = sourceUrl.join(""); 
+                // create an entry using the Article model
+                var entry = new Article(result);
+                // save the entry to the db
+                entry.save(function(err, doc) {
+                    // log any errors
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("Document added to Articles collection.");
+                    };
+                });
+            });
+            // redirect back to home page
+            res.redirect("/");
+        });
     });
 
     // route for one specific article 

@@ -3,8 +3,9 @@
 <div class="article">
     <h2><a href="{{article.link}}">{{article.title}}</a></h2>
     <p>{{article.body}}</p>
+    <a class="detail-item">Via {{article.source}}</a>|
+    <a class="detail-item" href="/article/{{article._id}}">View {{article.comments.length}} Comments</a>
 </div>
-<a href="/article/{{article._id}}">View {{article.comments.length}} Comments</a>
 {{!--new comment area --}}
 <div class="newComment">
     <form action="{{article._id}}" method="post">

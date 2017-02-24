@@ -19,32 +19,38 @@ var CommentSchema = new Schema({
     author: {
         type: String,
         trim: true,
-        required: "An author is required to comment",
-        validate: [
-            function(input) {
-                return input.length >= 2;
-            },
-            "Author names must be longer than one character"
-        ]
+        default: "anonymous"
     },
     dateCreated: {
         type: Date,
         default: Date.now
     },
-    lastUpdated: {
+    dateUpdated: {
         type: Date,
         default: Date.now
     },
-    replies: [{ 
+    comments: [{ 
         type: Schema.Types.ObjectId, 
         ref: "Comment"
-    }]
+    }],
+    totalComments: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    score: {
+        type: Number,
+        default: 0,
+        get: v => Math.round(v),
+        set: v => Math.round(v)
+    },
+
 });
 
 // methods for the schema 
-CommentSchema.methods.lastUpdatedDate = function(){
-    this.updatedDate = Date.now;
-    return this.updatedDate;
+CommentSchema.methods.updateDateUpdated = function(){
+    this.dateUpdated = Date.now;
+    return this.dateUpdated;
 };
 
 // use the schema to make the model

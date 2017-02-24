@@ -3,8 +3,8 @@
 <div class="article">
     <h2><a href="{{article.link}}">{{article.title}}</a></h2>
     <p>{{article.body}}</p>
-    <a class="detail-item">Via {{article.source}}</a>|
-    <a class="detail-item" href="/article/{{article._id}}">View {{article.comments.length}} Comments</a>
+    <a class="detail-item">{{article.source}}</a>|
+    <a class="detail-item" href="/article/{{article._id}}">{{article.comments.length}} comments</a>
 </div>
 {{!--new comment area --}}
 <div class="newComment">
@@ -17,13 +17,5 @@
 </div>
 {{!--existing comment area--}}
 {{#each article.comments}}
-    <div class="comment">
-        <p class="comment-body">{{body}}</p>
-        <div class="comment-tools">
-            <a class="comment-detail">{{author}}</a>|
-            <a class="comment-detail">{{dateCreated}}</a>|
-            <a class="comment-detail" href="/comment/{{_id}}">reply</a>|
-            <a class="comment-detail" href="/delete/{{../article._id}}/{{_id}}">delete</a>|
-        </div>
-    </div>
+    {{> reply}}
 {{/each}}

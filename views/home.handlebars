@@ -4,8 +4,9 @@
         <div class="article">
             <h3><a href="{{link}}">{{title}}</a></h3>
             <p>{{body}}</p>
-            <a class="detail-item">Via {{source}}</a>|
-            <a class="detail-item" href="/article/{{_id}}">View {{comments.length}} Comments</a>
+            <a class="detail-item">{{source}}</a>|
+            <a class="detail-item">{{dateCreated}}</a>|
+            <a class="detail-item" href="/article/{{_id}}">{{comments.length}} comments</a>
         </div>
     </div>
 {{/each}}

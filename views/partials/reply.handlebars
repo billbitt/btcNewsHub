@@ -1,0 +1,14 @@
+{{!--existing comment area--}}
+    <div class="comment">
+        <p class="comment-body">{{body}}</p>
+        <div class="comment-tools">
+            <a class="comment-detail">{{author}}</a>|
+            <a class="comment-detail">{{dateCreated}}</a>|
+            <a class="comment-detail">{{comments.length}} replies</a>|
+            <a class="comment-detail" href="/comment/{{_id}}">reply</a>|
+        </div>
+    {{#each comments}}
+        {{> reply}}
+    {{/each}}
+    </div>
+    

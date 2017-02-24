@@ -6,6 +6,9 @@ var Comment = require("../models/Comment.js");
 var request = require("request");
 var cheerio = require("cheerio");
 
+// load dependencies
+var moment = require("moment")
+
 // export routes
 module.exports = function(app) {
 
@@ -13,6 +16,8 @@ module.exports = function(app) {
     app.get("/", function(req, res) {
         //grabs all of the articles and render them in handlebars
         Article.find({})
+        .limit(10)
+        .sort({ dateCreated: 1 })
         .populate("comments")
         .exec(function(err, docs){
             if (err) {
@@ -41,7 +46,7 @@ module.exports = function(app) {
                 result.title = $(element).children("header").children("h2").text();
                 result.link = $(element).children("a", "header").attr("href");
                 result.body = $(element).children("div.front-view-content").text();
-                
+                console.log("pub:", result.publishDate);
                 //break link down to source
                 var sourceUrl = [];
                 var start = false;
@@ -74,23 +79,78 @@ module.exports = function(app) {
         });
     });
 
-    // route for one specific article 
+    // route to view one specific article 
     app.get("/article/:articleId", function(req, res) {
         Article.findById(req.params.articleId)
-        .populate("comments")
+        .populate({
+            path: "comments",
+            populate: {
+                path: "comments",
+                populate: {
+                    path: "comments",
+                    populate: {
+                        path: "comments",
+                        populate: {
+                            path: "comments"
+                        }
+                    }
+                }
+            }
+        })
         .exec(function(err, doc){
+            // handle errors
             if (err) {
                 res.send(err);
+            // if no errors, display article 
             } else {
+                // NOTE: trying to change the date property in the doc using moment before it is displayed 
+                console.log("doc1:", doc);
+                for (var i = 0; i < doc.comments.length; i++){
+                    console.log("date->", doc.comments[i].dateCreated);
+                    doc.comments[i].dateCreated = "foo";
+                    console.log("date->", doc.comments[i].dateCreated);
+                    //doc.comments[i].dateCreated = moment(doc.comments[i].dateCreated).fromNow(true);
+                }
+                console.log("doc2:", doc);
+                // render the article 
                 res.render("article", {article: doc});
             };
         });
     });
 
-    // route for new comment to an article 
+    // route to view a comment and replies  
+    app.get("/comment/:commentId", function(req,res) {
+        Comment.findById(req.params.commentId)
+        .populate({
+            path: "comments",
+            populate: {
+                path: "comments",
+                populate: {
+                    path: "comments",
+                    populate: {
+                        path: "comments",
+                        populate: {
+                            path: "comments"
+                        }
+                    }
+                }
+            }
+        })
+        .exec(function(err, doc){
+            if (err) {
+                res.send(err);
+            } else {
+                res.render("comment", {comment: doc})
+            }
+        })
+    });
+
+    // route to add a new comment to an article 
     app.post("/article/:articleId", function(req, res) {
         // create a new comment from the model 
         var newComment = new Comment(req.body);
+        // update the "dateUpdated" date
+        //newComment.updateDateUpdated();
         // save the comment in the db
         newComment.save(function(err, doc){
             if (err) {
@@ -100,7 +160,9 @@ module.exports = function(app) {
                 Article.findOneAndUpdate(
                     {"_id": req.params.articleId},
                     {$push: {"comments": doc._id}},
-                    {new: true},
+                    {
+                        new: true
+                    },
                     function(error, document){
                         if (error) {
                             res.send(error);
@@ -115,23 +177,12 @@ module.exports = function(app) {
         })
     });
 
-    // route to compose a reply 
-    app.get("/comment/:commentId", function(req,res) {
-        Comment.findById(req.params.commentId)
-        .populate("replies")
-        .exec(function(err, doc){
-            if (err) {
-                res.send(err);
-            } else {
-                res.render("comment", {comment: doc})
-            }
-        })
-    });
-
-    // route to submit a reply  
+    // route to add a new comment to a comment  
     app.post("/comment/:commentId", function(req,res) {
         // create a new comment from the model 
         var newComment = new Comment(req.body);
+        // update the "dateUpdated" date
+        //newComment.updateDateUpdated();
         // save the comment in the db
         newComment.save(function(err, doc){
             if (err) {
@@ -140,7 +191,7 @@ module.exports = function(app) {
                 //update the comment document by adding the reply id to it 
                 Comment.findOneAndUpdate(
                     {"_id": req.params.commentId},
-                    {$push: {"replies": doc._id}},
+                    {$push: {"comments": doc._id}},
                     {new: true},
                     function(error, document){
                         if (error) {
@@ -155,17 +206,25 @@ module.exports = function(app) {
         })
     });
 
-    // route to delete comment 
-    app.get("/delete/:articleId/:commentId", function(req, res) {
-        Comment.findByIdAndRemove(req.params.commentId, function(err, doc) {
-            if (err) {
-                res.send(err);
-            } else {
-                console.log("successfull")
-                //re-render page
-                res.redirect("/article/" + req.params.articleId);
-            };
-        });
+    // route to delete a comment 
+    app.delete("/article/:articleId/:commentId", function(req, res) {
+        Comment.findOneAndUpdate(
+            {
+                "_id": req.params.commentId
+            },
+            {
+                $set: {"body": "deleted"}
+            }, 
+            function(err, doc) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    console.log("update successfull", doc)
+                    //re-render page
+                    res.redirect("/article/" + req.params.articleId);
+                };
+            }
+        );
     });
 
 }

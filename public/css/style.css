@@ -18,24 +18,26 @@ nav {
     position: relative;
 }
 
-.nav-right {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    margin: 20px;
-}
-
-.nav-link {
-    color: white
-}
-
-.nav-link:visited {
-    color: lightgoldenrodyellow
+#logo {
+    font-style: bold;
 }
 
 #tagline {
     color: lightgoldenrodyellow;
     font-style: italic;
+}
+
+.nav-right {
+    float: right;
+}
+
+.nav-link {
+    color: white;
+    margin: 0px 10px 0px 10px;
+}
+
+.nav-link:visited {
+    color: lightgoldenrodyellow
 }
 
 .article, .comment, .newComment {
@@ -72,6 +74,7 @@ nav {
 footer {
     text-align: center;
     background-color: lightgrey;
+    color: darkslategray;
 }
 
 

@@ -33,37 +33,29 @@ module.exports = function(app) {
         });
     });
 
-    // add Comment
-    app.post("/api/article/:id", function(req, res) {
-        // create a new comment from the model 
-        var newComment = new Comment(req.body);
-        // use a custom method to update the date 
-        newComment.updateDateUpdated();  
-        // save the comment in the db
-        newComment.save(function(err, doc){
-            if (err) {
-                res.send(err);
-            } else {
-                //update the article document by adding the comment id to it 
-                Article.findOneAndUpdate(
-                    {"_id": req.params.id},
-                    {$push: {"comments": doc._id}},
-                    {new: true},
-                    function(error, document){
-                        if (error) {
-                            res.send(error);
-                        } else {
-                            console.log("comment saved");
-                            res.send(document);
-                        };
-                    }
-                );
-            };
-        })
+    // route to delete a comment 
+    app.delete("/api/comment/:id", function(req, res) {
+        Comment.findOneAndUpdate(
+            {
+                "_id": req.params.id
+            },
+            {
+                $set: {"body": "deleted"}
+            }, 
+            function(err, doc) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    console.log("update successfull", doc)
+                    //re-render page
+                    res.send("delete complete");
+                };
+            }
+        );
     });
 
     // update comment totals for all articles 
-    app.get("/api/updateCommentTotals", function(req, res) {
+    app.put("/api/updateCommentTotals", function(req, res) {
         Article.find({}, function (err, docs) {  // find all the docs 
             if (err) {
                 res.send("error:", err);

@@ -75,13 +75,13 @@ module.exports = function(app) {
                 });
             });
             // redirect back to home page
-            res.redirect("/");
+            res.redirect("/");  //Note: asnych issue 
         });
     });
 
     // route to view one specific article 
-    app.get("/article/:articleId", function(req, res) {
-        Article.findById(req.params.articleId)
+    app.get("/article/:id", function(req, res) {
+        Article.findById(req.params.id)
         .populate({
             path: "comments",
             populate: {
@@ -119,8 +119,8 @@ module.exports = function(app) {
     });
 
     // route to view a comment and replies  
-    app.get("/comment/:commentId", function(req,res) {
-        Comment.findById(req.params.commentId)
+    app.get("/comment/:id", function(req,res) {
+        Comment.findById(req.params.id)
         .populate({
             path: "comments",
             populate: {
@@ -146,7 +146,7 @@ module.exports = function(app) {
     });
 
     // route to add a new comment to an article 
-    app.post("/article/:articleId", function(req, res) {
+    app.post("/article/:id", function(req, res) {
         // create a new comment from the model 
         var newComment = new Comment(req.body);
         // update the "dateUpdated" date
@@ -158,7 +158,7 @@ module.exports = function(app) {
             } else {
                 //update the article document by adding the comment id to it 
                 Article.findOneAndUpdate(
-                    {"_id": req.params.articleId},
+                    {"_id": req.params.id},
                     {$push: {"comments": doc._id}},
                     {
                         new: true
@@ -168,7 +168,7 @@ module.exports = function(app) {
                             res.send(error);
                         } else {
                             //re-render the article page
-                            var redirectUrl = "/article/" + req.params.articleId;
+                            var redirectUrl = "/article/" + req.params.id;
                             res.redirect(redirectUrl);
                         };
                     }
@@ -178,7 +178,7 @@ module.exports = function(app) {
     });
 
     // route to add a new comment to a comment  
-    app.post("/comment/:commentId", function(req,res) {
+    app.post("/comment/:id", function(req,res) {
         // create a new comment from the model 
         var newComment = new Comment(req.body);
         // update the "dateUpdated" date
@@ -190,7 +190,7 @@ module.exports = function(app) {
             } else {
                 //update the comment document by adding the reply id to it 
                 Comment.findOneAndUpdate(
-                    {"_id": req.params.commentId},
+                    {"_id": req.params.id},
                     {$push: {"comments": doc._id}},
                     {new: true},
                     function(error, document){
@@ -198,33 +198,12 @@ module.exports = function(app) {
                             res.send(error);
                         } else {
                             //re-render the reply page
-                            res.redirect("/comment/" + req.params.commentId);
+                            res.redirect("/comment/" + req.params.id);
                         };
                     }
                 );
             };
         })
-    });
-
-    // route to delete a comment 
-    app.delete("/article/:articleId/:commentId", function(req, res) {
-        Comment.findOneAndUpdate(
-            {
-                "_id": req.params.commentId
-            },
-            {
-                $set: {"body": "deleted"}
-            }, 
-            function(err, doc) {
-                if (err) {
-                    res.send(err);
-                } else {
-                    console.log("update successfull", doc)
-                    //re-render page
-                    res.redirect("/article/" + req.params.articleId);
-                };
-            }
-        );
     });
 
 }

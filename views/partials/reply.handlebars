@@ -1,12 +1,29 @@
 {{!--existing comment area--}}
     <div class="comment">
-        <p class="comment-body">{{body}}</p>
-        <div class="comment-tools">
-            <a class="comment-detail">{{author}}</a>|
-            <a class="comment-detail">{{dateCreated}}</a>|
-            <a class="comment-detail">{{comments.length}} replies</a>|
-            <a class="comment-detail" href="/comment/{{_id}}">reply</a>|
-        </div>
+        <table>
+            <tr>
+                <td>
+                   <p></p>
+                </td>
+                <td>
+                    <p class="comment-body">{{body}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <div class="comment-tools">
+                        {{#if author}}
+                            <a>{{author}} </a> |
+                        {{/if}}
+                        <a class="comment-detail">{{dateCreated}}</a>|
+                        <a class="comment-detail">{{comments.length}} replies</a>|
+                        <a class="comment-detail" href="/comment/{{_id}}">reply</a>|
+                    </div>
+                </td>
+            </tr>
+        </table>
     {{#each comments}}
         {{> reply}}
     {{/each}}

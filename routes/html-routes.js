@@ -8,6 +8,7 @@ var cheerio = require("cheerio");
 
 // load dependencies
 var moment = require("moment")
+var Promise = require("bluebird");
 
 // export routes
 module.exports = function(app) {

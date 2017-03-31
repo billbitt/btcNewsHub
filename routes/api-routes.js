@@ -54,27 +54,5 @@ module.exports = function(app) {
         );
     });
 
-    // update comment totals for all articles 
-    app.put("/api/updateCommentTotals", function(req, res) {
-        Article.find({}, function (err, docs) {  // find all the docs 
-            if (err) {
-                res.send("error:", err);
-            } else {
-                console.log("docs:", docs);
-                docs.forEach(function (element) {  // update all the docs 
-                    element.addAllComments(); 
-                    element.save(function (error, updatedElement){
-                        if (err) {
-                            console.log("error:", error);
-                        } else {
-                            console.log("update succeeded");
-                        };
-                    });
-                });
-                res.send("update completed");  // send success response.  note: may have asynch issue with actual updates 
-            };
-        });
-    })
-
 }
 

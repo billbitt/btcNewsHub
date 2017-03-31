@@ -29,7 +29,7 @@ app.set("view engine", "handlebars");
 
 //--- configure database
 // connect to mongodb
-mongoose.connect("mongodb://heroku_x9jkg16f:qkq7k65g7r9sdmj070dudp7t3k@ds157529.mlab.com:57529/heroku_x9jkg16f") 
+mongoose.connect(process.env.MONGODB_URI);
 // store the connection
 var db = mongoose.connection;  
 // log any errors 
